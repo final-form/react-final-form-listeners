@@ -7,6 +7,8 @@
 
 ---
 
+🏁 React Final Form Listeners is a collection of useful components for listening to fields in a [🏁 React Final Form](https://github.com/final-form/react-final-form#-react-final-form).
+
 ## Installation
 
 ```bash
@@ -20,8 +22,6 @@ yarn add react-final-form-listeners react-final-form final-form
 ```
 
 ## Usage
-
-🏁 React Final Form Listeners is a collection of useful components for listening to fields in a [🏁 React Final Form](https://github.com/final-form/react-final-form#-react-final-form).
 
 ```jsx
 import { Form, Field } from 'react-final-form'
