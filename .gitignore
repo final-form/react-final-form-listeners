@@ -1,0 +1,13 @@
+.vscode
+*.iml
+.nyc_output
+coverage
+flow-coverage
+node_modules
+dist
+lib
+es
+npm-debug.log
+.DS_Store
+.idea
+yarn.lock

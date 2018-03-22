@@ -1,0 +1,15 @@
+// @flow
+import * as React from 'react'
+import type {
+  ExternallyChangedProps,
+  OnBlurProps,
+  OnChangeProps,
+  OnFocusProps
+} from './types'
+
+declare export var ExternallyChanged: React.ComponentType<
+  ExternallyChangedProps
+>
+declare export var OnBlur: React.ComponentType<OnBlurProps>
+declare export var OnChange: React.ComponentType<OnChangeProps>
+declare export var OnFocus: React.ComponentType<OnFocusProps>

@@ -1,0 +1,8 @@
+[ignore]
+
+[include]
+
+[libs]
+
+[options]
+esproposal.decorators=ignore

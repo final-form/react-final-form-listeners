@@ -1,0 +1,22 @@
+// @flow
+import * as React from 'react'
+
+export type ExternallyChangedProps = {
+  name: string,
+  children: (externallyChanged: boolean) => React.Node
+}
+
+export type OnBlurProps = {
+  name: string,
+  children: () => void
+}
+
+export type OnChangeProps = {
+  name: string,
+  children: (value: any, previous: any) => void
+}
+
+export type OnFocusProps = {
+  name: string,
+  children: () => void
+}
