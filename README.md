@@ -75,7 +75,7 @@ const MyForm = () => (
 
 ## Components
 
-The following can be imported from `react-final-form-arrays`.
+The following can be imported from `react-final-form-listeners`.
 
 ### `ExternallyChanged`
 
