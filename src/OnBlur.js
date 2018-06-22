@@ -25,8 +25,8 @@ class OnBlurState extends React.Component<Props, State> {
     }
   }
 
-  componentWillReceiveProps(nextProps: Props) {
-    const { children, meta: { active } } = nextProps
+  componentDidUpdate() {
+    const { children, meta: { active } } = this.props
     const { previous } = this.state
     if (previous && !active) {
       children()
