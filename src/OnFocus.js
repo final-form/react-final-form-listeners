@@ -25,12 +25,14 @@ class OnFocusState extends React.Component<Props, State> {
     }
   }
 
-  componentWillReceiveProps(nextProps: Props) {
-    const { children, meta: { active } } = nextProps
+  componentDidUpdate() {
+    const { children, meta: { active } } = this.props
     const { previous } = this.state
     if (active && !previous) {
       this.setState({ previous: active })
       children()
+    } else if (!active && previous) {
+      this.setState({ previous: active })
     }
   }
 
