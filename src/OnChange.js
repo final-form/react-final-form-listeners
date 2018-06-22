@@ -25,8 +25,8 @@ class OnChangeState extends React.Component<Props, State> {
     }
   }
 
-  componentWillReceiveProps(nextProps: Props) {
-    const { children, input: { value } } = nextProps
+  componentDidUpdate() {
+    const { children, input: { value } } = this.props
     const { previous } = this.state
     if (value !== previous) {
       this.setState({ previous: value })

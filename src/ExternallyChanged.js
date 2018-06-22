@@ -30,8 +30,8 @@ class ExternallyChangedState extends React.Component<Props, State> {
     }
   }
 
-  componentWillReceiveProps(nextProps: Props) {
-    const { input: { value }, meta: { active } } = nextProps
+  componentDidUpdate() {
+    const { input: { value }, meta: { active } } = this.props
     const { previous } = this.state
     if (value !== previous) {
       this.setState({ previous: value, externallyChanged: !active })

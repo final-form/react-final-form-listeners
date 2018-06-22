@@ -55,4 +55,30 @@ describe('OnFocus', () => {
     blur('foo')
     expect(spy).toHaveBeenCalledTimes(1)
   })
+
+  it('should call listener on subsequent focuses', () => {
+    const spy = jest.fn()
+    let blur
+    let focus
+    TestUtils.renderIntoDocument(
+      <Form onSubmit={onSubmitMock}>
+        {props => {
+          blur = props.blur
+          focus = props.focus
+          return <OnFocus name="foo">{spy}</OnFocus>
+        }}
+      </Form>
+    )
+    expect(spy).not.toHaveBeenCalled()
+    focus('foo')
+    expect(spy).toHaveBeenCalled()
+    expect(spy).toHaveBeenCalledTimes(1)
+    expect(spy).toHaveBeenCalledWith()
+
+    blur('foo')
+    expect(spy).toHaveBeenCalledTimes(1)
+
+    focus('foo')
+    expect(spy).toHaveBeenCalledTimes(2)
+  })
 })
