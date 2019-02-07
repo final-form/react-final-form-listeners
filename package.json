@@ -1,6 +1,6 @@
 {
   "name": "react-final-form-listeners",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A collection of components to listen to 🏁 React Final Form fields",
   "main": "dist/react-final-form-listeners.cjs.js",
   "jsnext:main": "dist/react-final-form-listeners.es.js",
@@ -24,6 +24,9 @@
     "url": "https://github.com/final-form/react-final-form-listeners/issues"
   },
   "homepage": "https://github.com/final-form/react-final-form-listeners#readme",
+  "dependencies": {
+    "@babel/runtime": "^7.1.5"
+  },
   "devDependencies": {
     "@babel/core": "^7.0.0",
     "@babel/plugin-external-helpers": "^7.0.0",
