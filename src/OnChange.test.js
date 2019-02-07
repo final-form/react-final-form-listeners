@@ -22,7 +22,7 @@ describe('OnChange', () => {
     TestUtils.renderIntoDocument(
       <Form onSubmit={onSubmitMock}>
         {props => {
-          change = props.change
+          change = props.form.change
           return <OnChange name="foo">{spy}</OnChange>
         }}
       </Form>
@@ -40,7 +40,7 @@ describe('OnChange', () => {
     TestUtils.renderIntoDocument(
       <Form onSubmit={onSubmitMock} initialValues={{ foo: 'bar' }}>
         {props => {
-          change = props.change
+          change = props.form.change
           return <OnChange name="foo">{spy}</OnChange>
         }}
       </Form>
@@ -58,7 +58,7 @@ describe('OnChange', () => {
     TestUtils.renderIntoDocument(
       <Form onSubmit={onSubmitMock} initialValues={{ foo: 'bar' }}>
         {props => {
-          change = props.change
+          change = props.form.change
           return <OnChange name="foo">{spy}</OnChange>
         }}
       </Form>

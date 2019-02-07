@@ -2,7 +2,7 @@ import resolve from 'rollup-plugin-node-resolve'
 import babel from 'rollup-plugin-babel'
 import flow from 'rollup-plugin-flow'
 import commonjs from 'rollup-plugin-commonjs'
-import uglify from 'rollup-plugin-uglify'
+import { uglify } from 'rollup-plugin-uglify'
 import replace from 'rollup-plugin-replace'
 
 const minify = process.env.MINIFY
@@ -55,8 +55,35 @@ export default {
     babel({
       exclude: 'node_modules/**',
       babelrc: false,
-      presets: [['env', { modules: false }], 'stage-2'],
-      plugins: ['external-helpers']
+      runtimeHelpers: true,
+      presets: [
+        [
+          '@babel/preset-env',
+          {
+            modules: false,
+            loose: true
+          }
+        ],
+        '@babel/preset-flow'
+      ],
+      plugins: [
+        ['@babel/plugin-transform-runtime', { useESModules: !cjs }],
+        '@babel/plugin-transform-flow-strip-types',
+        '@babel/plugin-syntax-dynamic-import',
+        '@babel/plugin-syntax-import-meta',
+        '@babel/plugin-proposal-class-properties',
+        '@babel/plugin-proposal-json-strings',
+        [
+          '@babel/plugin-proposal-decorators',
+          {
+            legacy: true
+          }
+        ],
+        '@babel/plugin-proposal-function-sent',
+        '@babel/plugin-proposal-export-namespace-from',
+        '@babel/plugin-proposal-numeric-separator',
+        '@babel/plugin-proposal-throw-expressions'
+      ]
     }),
     umd
       ? replace({

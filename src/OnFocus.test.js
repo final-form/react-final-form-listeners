@@ -22,7 +22,7 @@ describe('OnFocus', () => {
     TestUtils.renderIntoDocument(
       <Form onSubmit={onSubmitMock}>
         {props => {
-          focus = props.focus
+          focus = props.form.focus
           return <OnFocus name="foo">{spy}</OnFocus>
         }}
       </Form>
@@ -41,8 +41,8 @@ describe('OnFocus', () => {
     TestUtils.renderIntoDocument(
       <Form onSubmit={onSubmitMock}>
         {props => {
-          blur = props.blur
-          focus = props.focus
+          blur = props.form.blur
+          focus = props.form.focus
           return <OnFocus name="foo">{spy}</OnFocus>
         }}
       </Form>
@@ -63,8 +63,8 @@ describe('OnFocus', () => {
     TestUtils.renderIntoDocument(
       <Form onSubmit={onSubmitMock}>
         {props => {
-          blur = props.blur
-          focus = props.focus
+          blur = props.form.blur
+          focus = props.form.focus
           return <OnFocus name="foo">{spy}</OnFocus>
         }}
       </Form>

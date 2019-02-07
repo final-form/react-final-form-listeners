@@ -25,8 +25,8 @@ describe('ExternallyChanged', () => {
     TestUtils.renderIntoDocument(
       <Form onSubmit={onSubmitMock} subscription={{}}>
         {props => {
-          focus = props.focus
-          change = props.change
+          focus = props.form.focus
+          change = props.form.change
           return <ExternallyChanged name="foo">{spy}</ExternallyChanged>
         }}
       </Form>
@@ -47,7 +47,7 @@ describe('ExternallyChanged', () => {
     TestUtils.renderIntoDocument(
       <Form onSubmit={onSubmitMock} subscription={{}}>
         {props => {
-          change = props.change
+          change = props.form.change
           return <ExternallyChanged name="foo">{spy}</ExternallyChanged>
         }}
       </Form>
@@ -67,8 +67,8 @@ describe('ExternallyChanged', () => {
     TestUtils.renderIntoDocument(
       <Form onSubmit={onSubmitMock} subscription={{}}>
         {props => {
-          focus = props.focus
-          change = props.change
+          focus = props.form.focus
+          change = props.form.change
           return <ExternallyChanged name="foo">{spy}</ExternallyChanged>
         }}
       </Form>
