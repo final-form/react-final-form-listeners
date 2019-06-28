@@ -1,14 +1,16 @@
 import React from 'react'
-import TestUtils from 'react-dom/test-utils'
-import { Form } from 'react-final-form'
+import { render, fireEvent, cleanup } from '@testing-library/react'
+import { Form, Field } from 'react-final-form'
 import OnBlur from './OnBlur'
 
 const onSubmitMock = () => {}
 
 describe('OnBlur', () => {
+  afterEach(cleanup)
+
   it('should not call listener on first render', () => {
     const spy = jest.fn()
-    TestUtils.renderIntoDocument(
+    render(
       <Form onSubmit={onSubmitMock}>
         {() => <OnBlur name="foo">{spy}</OnBlur>}
       </Form>
@@ -18,37 +20,37 @@ describe('OnBlur', () => {
 
   it('should not call listener on focus', () => {
     const spy = jest.fn()
-    let focus
-    TestUtils.renderIntoDocument(
+    const { getByTestId } = render(
       <Form onSubmit={onSubmitMock}>
-        {props => {
-          focus = props.form.focus
-          return <OnBlur name="foo">{spy}</OnBlur>
-        }}
+        {() => (
+          <form>
+            <Field name="name" component="input" data-testid="name" />
+            <OnBlur name="name">{spy}</OnBlur>
+          </form>
+        )}
       </Form>
     )
     expect(spy).not.toHaveBeenCalled()
-    focus('foo')
+    fireEvent.focus(getByTestId('name'))
     expect(spy).not.toHaveBeenCalled()
   })
 
   it('should call listener on blur', () => {
     const spy = jest.fn()
-    let blur
-    let focus
-    TestUtils.renderIntoDocument(
+    const { getByTestId } = render(
       <Form onSubmit={onSubmitMock}>
-        {props => {
-          blur = props.form.blur
-          focus = props.form.focus
-          return <OnBlur name="foo">{spy}</OnBlur>
-        }}
+        {() => (
+          <form>
+            <Field name="name" component="input" data-testid="name" />
+            <OnBlur name="name">{spy}</OnBlur>
+          </form>
+        )}
       </Form>
     )
     expect(spy).not.toHaveBeenCalled()
-    focus('foo')
+    fireEvent.focus(getByTestId('name'))
     expect(spy).not.toHaveBeenCalled()
-    blur('foo')
+    fireEvent.blur(getByTestId('name'))
     expect(spy).toHaveBeenCalled()
     expect(spy).toHaveBeenCalledTimes(1)
     expect(spy).toHaveBeenCalledWith()
