@@ -1,14 +1,16 @@
 import React from 'react'
-import TestUtils from 'react-dom/test-utils'
+import { render, cleanup } from '@testing-library/react'
 import { Form } from 'react-final-form'
 import ExternallyChanged from './ExternallyChanged'
 
 const onSubmitMock = () => {}
 
 describe('ExternallyChanged', () => {
+  afterEach(cleanup)
+
   it('should be false on first render', () => {
     const spy = jest.fn(() => <div />)
-    TestUtils.renderIntoDocument(
+    render(
       <Form onSubmit={onSubmitMock} subscription={{}}>
         {() => <ExternallyChanged name="foo">{spy}</ExternallyChanged>}
       </Form>
@@ -22,7 +24,7 @@ describe('ExternallyChanged', () => {
     const spy = jest.fn(() => <div />)
     let focus
     let change
-    TestUtils.renderIntoDocument(
+    render(
       <Form onSubmit={onSubmitMock} subscription={{}}>
         {props => {
           focus = props.form.focus
@@ -44,7 +46,7 @@ describe('ExternallyChanged', () => {
   it('should change to true when value changes while not active', () => {
     const spy = jest.fn(() => <div />)
     let change
-    TestUtils.renderIntoDocument(
+    render(
       <Form onSubmit={onSubmitMock} subscription={{}}>
         {props => {
           change = props.form.change
@@ -64,7 +66,7 @@ describe('ExternallyChanged', () => {
     const spy = jest.fn(() => <div />)
     let focus
     let change
-    TestUtils.renderIntoDocument(
+    render(
       <Form onSubmit={onSubmitMock} subscription={{}}>
         {props => {
           focus = props.form.focus

@@ -1,14 +1,16 @@
 import React from 'react'
-import TestUtils from 'react-dom/test-utils'
-import { Form } from 'react-final-form'
+import { render, fireEvent, cleanup } from '@testing-library/react'
+import { Form, Field } from 'react-final-form'
 import OnChange from './OnChange'
 
 const onSubmitMock = () => {}
 
 describe('OnChange', () => {
+  afterEach(cleanup)
+
   it('should not call listener on first render', () => {
     const spy = jest.fn()
-    TestUtils.renderIntoDocument(
+    render(
       <Form onSubmit={onSubmitMock} initialValues={{ foo: 'bar' }}>
         {() => <OnChange name="foo">{spy}</OnChange>}
       </Form>
@@ -18,55 +20,58 @@ describe('OnChange', () => {
 
   it('should call listener when going from uninitialized to value', () => {
     const spy = jest.fn()
-    let change
-    TestUtils.renderIntoDocument(
+    const { getByTestId } = render(
       <Form onSubmit={onSubmitMock}>
-        {props => {
-          change = props.form.change
-          return <OnChange name="foo">{spy}</OnChange>
-        }}
+        {() => (
+          <form>
+            <Field name="name" component="input" data-testid="name" />
+            <OnChange name="name">{spy}</OnChange>
+          </form>
+        )}
       </Form>
     )
     expect(spy).not.toHaveBeenCalled()
-    change('foo', 'bar')
+    fireEvent.change(getByTestId('name'), { target: { value: 'erikras' } })
     expect(spy).toHaveBeenCalled()
     expect(spy).toHaveBeenCalledTimes(1)
-    expect(spy).toHaveBeenCalledWith('bar', '')
+    expect(spy).toHaveBeenCalledWith('erikras', '')
   })
 
   it('should call listener when going from initialized to value', () => {
     const spy = jest.fn()
-    let change
-    TestUtils.renderIntoDocument(
-      <Form onSubmit={onSubmitMock} initialValues={{ foo: 'bar' }}>
-        {props => {
-          change = props.form.change
-          return <OnChange name="foo">{spy}</OnChange>
-        }}
+    const { getByTestId } = render(
+      <Form onSubmit={onSubmitMock} initialValues={{ name: 'erik' }}>
+        {() => (
+          <form>
+            <Field name="name" component="input" data-testid="name" />
+            <OnChange name="name">{spy}</OnChange>
+          </form>
+        )}
       </Form>
     )
     expect(spy).not.toHaveBeenCalled()
-    change('foo', 'baz')
+    fireEvent.change(getByTestId('name'), { target: { value: 'erikras' } })
     expect(spy).toHaveBeenCalled()
     expect(spy).toHaveBeenCalledTimes(1)
-    expect(spy).toHaveBeenCalledWith('baz', 'bar')
+    expect(spy).toHaveBeenCalledWith('erikras', 'erik')
   })
 
   it('should call listener when changing to null', () => {
     const spy = jest.fn()
-    let change
-    TestUtils.renderIntoDocument(
-      <Form onSubmit={onSubmitMock} initialValues={{ foo: 'bar' }}>
-        {props => {
-          change = props.form.change
-          return <OnChange name="foo">{spy}</OnChange>
-        }}
+    const { getByTestId } = render(
+      <Form onSubmit={onSubmitMock} initialValues={{ name: 'erikras' }}>
+        {() => (
+          <form>
+            <Field name="name" component="input" data-testid="name" />
+            <OnChange name="name">{spy}</OnChange>
+          </form>
+        )}
       </Form>
     )
     expect(spy).not.toHaveBeenCalled()
-    change('foo', null)
+    fireEvent.change(getByTestId('name'), { target: { value: null } })
     expect(spy).toHaveBeenCalled()
     expect(spy).toHaveBeenCalledTimes(1)
-    expect(spy).toHaveBeenCalledWith(null, 'bar')
+    expect(spy).toHaveBeenCalledWith('', 'erikras')
   })
 })
