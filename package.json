@@ -9,6 +9,7 @@
   "files": [
     "dist"
   ],
+  "types": "dist/index.d.ts",
   "scripts": {
     "start": "nps",
     "test": "nps test",

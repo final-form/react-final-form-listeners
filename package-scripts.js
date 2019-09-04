@@ -53,6 +53,7 @@ module.exports = {
     },
     copyTypes: series(
       npsUtils.copy('src/*.js.flow dist'),
+      npsUtils.copy('src/index.d.ts dist'),
       npsUtils.copy(
         'dist/index.js.flow dist --rename="react-final-form-listeners.cjs.js.flow"'
       ),
