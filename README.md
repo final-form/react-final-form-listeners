@@ -89,18 +89,6 @@ The name of the field to listen to.
 
 A render prop given the boolean flag.
 
-### `OnBlur`
-
-Calls its `children` callback whenever the specified field is blurred. It renders nothing.
-
-#### `name : String`
-
-The name of the field to listen to.
-
-#### `children: () => void`
-
-A function that will be called whenever the specified field is blurred.
-
 ### `OnChange`
 
 Calls its `children` callback whenever the specified field changes. It renders nothing.
@@ -111,7 +99,7 @@ The name of the field to listen to.
 
 #### `children: (value: any, previous: any) => void`
 
-A function that will be called whenever the specified field is blurred. It is passed the new value and the previous value.
+A function that will be called whenever the specified field is changed. It is passed the new value and the previous value.
 
 ### `OnFocus`
 
@@ -124,3 +112,15 @@ The name of the field to listen to.
 #### `children: () => void`
 
 A function that will be called whenever the specified field becomes active.
+
+### `OnBlur`
+
+Calls its `children` callback whenever the specified field is blurred. It renders nothing.
+
+#### `name : String`
+
+The name of the field to listen to.
+
+#### `children: () => void`
+
+A function that will be called whenever the specified field is blurred.
