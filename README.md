@@ -111,7 +111,7 @@ The name of the field to listen to.
 
 #### `children: (value: any, previous: any) => void`
 
-A function that will be called whenever the specified field is blurred. It is passed the new value and the previous value.
+A function that will be called whenever the specified field is changed. It is passed the new value and the previous value.
 
 ### `OnFocus`
 
