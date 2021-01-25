@@ -4,6 +4,7 @@ import { Form, Field } from 'react-final-form'
 import OnChange from './OnChange'
 
 const onSubmitMock = () => {}
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
 
 describe('OnChange', () => {
   afterEach(cleanup)
@@ -73,5 +74,77 @@ describe('OnChange', () => {
     expect(spy).toHaveBeenCalled()
     expect(spy).toHaveBeenCalledTimes(1)
     expect(spy).toHaveBeenCalledWith('', 'erikras')
+  })
+
+  it('should handle quick subsequent changes properly', () => {
+    const toppings = ['Pepperoni', 'Mushrooms', 'Olives']
+    const { getByTestId } = render(
+      <Form onSubmit={onSubmitMock}>
+        {({ form }) => (
+          <React.Fragment>
+            <Field
+              name="everything"
+              component="input"
+              type="checkbox"
+              data-testid="everything"
+            />
+            <OnChange name="everything">
+              {next => {
+                if (next) {
+                  return form.change('toppings', toppings)
+                }
+              }}
+            </OnChange>
+            {toppings.length > 0 &&
+              toppings.map((topping, index) => {
+                return (
+                  <Field
+                    component="input"
+                    key={topping}
+                    name="toppings"
+                    value={topping}
+                    type="checkbox"
+                    data-testid={topping}
+                  />
+                )
+              })}
+            <OnChange name="toppings">
+              {next => {
+                form.change(
+                  'everything',
+                  next && next.length === toppings.length
+                )
+              }}
+            </OnChange>
+          </React.Fragment>
+        )}
+      </Form>
+    )
+    expect(getByTestId('everything').checked).toBe(false)
+    expect(getByTestId('Pepperoni').checked).toBe(false)
+    expect(getByTestId('Mushrooms').checked).toBe(false)
+    expect(getByTestId('Olives').checked).toBe(false)
+
+    fireEvent.click(getByTestId('Pepperoni'))
+    expect(getByTestId('Pepperoni').checked).toBe(true)
+    expect(getByTestId('everything').checked).toBe(false)
+
+    fireEvent.click(getByTestId('Mushrooms'))
+    expect(getByTestId('Mushrooms').checked).toBe(true)
+    expect(getByTestId('everything').checked).toBe(false)
+
+    fireEvent.click(getByTestId('Olives'))
+    expect(getByTestId('Olives').checked).toBe(true)
+    expect(getByTestId('everything').checked).toBe(true)
+
+    fireEvent.click(getByTestId('Olives'))
+    expect(getByTestId('Olives').checked).toBe(false)
+    expect(getByTestId('everything').checked).toBe(false)
+
+    fireEvent.click(getByTestId('everything'))
+    expect(getByTestId('Pepperoni').checked).toBe(true)
+    expect(getByTestId('Mushrooms').checked).toBe(true)
+    expect(getByTestId('Olives').checked).toBe(true)
+    expect(getByTestId('everything').checked).toBe(true)
   })
 })
