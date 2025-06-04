@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Field } from 'react-final-form'
+import { Field, FieldRenderProps } from 'react-final-form'
 import { OnChangeProps } from './types'
 
 interface Props {
@@ -9,33 +9,27 @@ interface Props {
   }
 }
 
-interface State {
-  previous: any
-}
+const OnChangeState: React.FC<Props> = ({ children, input }) => {
+  const previousValueRef = React.useRef<any>(undefined)
+  const hasInitializedRef = React.useRef(false)
 
-class OnChangeState extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props)
-    this.state = {
-      previous: props.input.value
+  // The dependency array is intentionally omitted here because this effect
+  // is designed to run on every render. It compares the current and previous
+  // values of `input.value` and triggers the `children` callback if they differ.
+  React.useLayoutEffect(() => {
+    if (!hasInitializedRef.current) {
+      hasInitializedRef.current = true
+      previousValueRef.current = input.value
+      return
     }
-  }
 
-  componentDidUpdate() {
-    const {
-      children,
-      input: { value }
-    } = this.props
-    const { previous } = this.state
-    if (value !== previous) {
-      this.setState({ previous: value })
-      children(value, previous)
+    if (input.value !== previousValueRef.current) {
+      children(input.value, previousValueRef.current)
+      previousValueRef.current = input.value
     }
-  }
+  })
 
-  render() {
-    return null
-  }
+  return null
 }
 
 const OnChange: React.FC<OnChangeProps> = ({ name, children }) =>
@@ -43,7 +37,7 @@ const OnChange: React.FC<OnChangeProps> = ({ name, children }) =>
     name,
     subscription: { value: true },
     allowNull: true,
-    render: (props: any) =>
+    render: (props: FieldRenderProps<any>) =>
       React.createElement(OnChangeState, { ...props, children })
   })
 

@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Field } from 'react-final-form'
+import { Field, FieldRenderProps } from 'react-final-form'
 import { OnBlurProps } from './types'
 
 interface Props {
@@ -44,7 +44,7 @@ const OnBlur: React.FC<OnBlurProps> = ({ name, children }) =>
   React.createElement(Field, {
     name,
     subscription: { active: true },
-    render: (props: any) =>
+    render: (props: FieldRenderProps<any>) =>
       React.createElement(OnBlurState, { ...props, children })
   })
 

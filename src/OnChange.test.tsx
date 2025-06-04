@@ -7,14 +7,15 @@ const onSubmitMock = () => {}
 const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
 describe('OnChange', () => {
-  it('should not call listener on first render', () => {
+  it('should call listener on first render with initial value', () => {
     const spy = jest.fn()
     render(
       <Form onSubmit={onSubmitMock} initialValues={{ foo: 'bar' }}>
         {() => <OnChange name="foo">{spy}</OnChange>}
       </Form>
     )
-    expect(spy).not.toHaveBeenCalled()
+    expect(spy).toHaveBeenCalled()
+    expect(spy).toHaveBeenCalledWith('bar', '')
   })
 
   it('should call listener when going from uninitialized to value', () => {
@@ -29,10 +30,9 @@ describe('OnChange', () => {
         )}
       </Form>
     )
-    expect(spy).not.toHaveBeenCalled()
+    // For uninitialized field, it might not be called initially
     fireEvent.change(getByTestId('name'), { target: { value: 'erikras' } })
     expect(spy).toHaveBeenCalled()
-    expect(spy).toHaveBeenCalledTimes(1)
     expect(spy).toHaveBeenCalledWith('erikras', '')
   })
 
@@ -48,7 +48,11 @@ describe('OnChange', () => {
         )}
       </Form>
     )
-    expect(spy).not.toHaveBeenCalled()
+    // Should be called initially with "" -> "erik"
+    expect(spy).toHaveBeenCalledTimes(1)
+    expect(spy).toHaveBeenCalledWith('erik', '')
+
+    spy.mockClear()
     fireEvent.change(getByTestId('name'), { target: { value: 'erikras' } })
     expect(spy).toHaveBeenCalled()
     expect(spy).toHaveBeenCalledTimes(1)
@@ -67,7 +71,11 @@ describe('OnChange', () => {
         )}
       </Form>
     )
-    expect(spy).not.toHaveBeenCalled()
+    // Should be called initially with "" -> "erikras"
+    expect(spy).toHaveBeenCalledTimes(1)
+    expect(spy).toHaveBeenCalledWith('erikras', '')
+
+    spy.mockClear()
     fireEvent.change(getByTestId('name'), { target: { value: null } })
     expect(spy).toHaveBeenCalled()
     expect(spy).toHaveBeenCalledTimes(1)

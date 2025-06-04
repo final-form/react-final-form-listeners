@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Field } from 'react-final-form'
+import { Field, FieldRenderProps } from 'react-final-form'
 import { OnFocusProps } from './types'
 
 interface Props {
@@ -44,7 +44,7 @@ const OnFocus: React.FC<OnFocusProps> = ({ name, children }) =>
   React.createElement(Field, {
     name,
     subscription: { active: true },
-    render: (props: any) =>
+    render: (props: FieldRenderProps<any>) =>
       React.createElement(OnFocusState, { ...props, children })
   })
 

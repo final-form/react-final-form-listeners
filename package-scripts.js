@@ -58,6 +58,10 @@ module.exports = {
       description: 'lint the entire project',
       script: 'eslint .'
     },
+    prettier: {
+      description: 'Runs prettier on everything',
+      script: 'prettier --write "**/*.([jt]s*)"'
+    },
     typecheck: {
       description: 'typecheck the entire project',
       script: 'tsc --noEmit'
