@@ -1,23 +1,19 @@
-// @flow
 import * as React from 'react'
 import { Field } from 'react-final-form'
-import type { OnChangeProps } from './types'
+import { OnChangeProps } from './types'
 
-type Props = {
-  children: (value: any, previous: any) => void,
+interface Props {
+  children: (value: any, previous: any) => void
   input: {
     value: any
   }
 }
 
-type State = {
+interface State {
   previous: any
 }
 
 class OnChangeState extends React.Component<Props, State> {
-  props: Props
-  state: State
-
   constructor(props: Props) {
     super(props)
     this.state = {
@@ -26,7 +22,10 @@ class OnChangeState extends React.Component<Props, State> {
   }
 
   componentDidUpdate() {
-    const { children, input: { value } } = this.props
+    const {
+      children,
+      input: { value }
+    } = this.props
     const { previous } = this.state
     if (value !== previous) {
       this.setState({ previous: value })
@@ -39,12 +38,13 @@ class OnChangeState extends React.Component<Props, State> {
   }
 }
 
-const OnChange = ({ name, children }: OnChangeProps) =>
+const OnChange: React.FC<OnChangeProps> = ({ name, children }) =>
   React.createElement(Field, {
     name,
     subscription: { value: true },
     allowNull: true,
-    render: props => React.createElement(OnChangeState, { ...props, children })
+    render: (props: any) =>
+      React.createElement(OnChangeState, { ...props, children })
   })
 
 export default OnChange

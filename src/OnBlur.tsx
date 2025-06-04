@@ -1,23 +1,19 @@
-// @flow
 import * as React from 'react'
 import { Field } from 'react-final-form'
-import type { OnBlurProps } from './types'
+import { OnBlurProps } from './types'
 
-type Props = {
-  children: () => void,
+interface Props {
+  children: () => void
   meta: {
     active?: boolean
   }
 }
 
-type State = {
+interface State {
   previous: boolean
 }
 
 class OnBlurState extends React.Component<Props, State> {
-  props: Props
-  state: State
-
   constructor(props: Props) {
     super(props)
     this.state = {
@@ -26,13 +22,16 @@ class OnBlurState extends React.Component<Props, State> {
   }
 
   componentDidUpdate() {
-    const { children, meta: { active } } = this.props
+    const {
+      children,
+      meta: { active }
+    } = this.props
     const { previous } = this.state
     if (previous && !active) {
       children()
     }
-    if (previous !== active) {
-      this.setState({ previous: active })
+    if (previous !== !!active) {
+      this.setState({ previous: !!active })
     }
   }
 
@@ -41,11 +40,12 @@ class OnBlurState extends React.Component<Props, State> {
   }
 }
 
-const OnBlur = ({ name, children }: OnBlurProps) =>
+const OnBlur: React.FC<OnBlurProps> = ({ name, children }) =>
   React.createElement(Field, {
     name,
     subscription: { active: true },
-    render: props => React.createElement(OnBlurState, { ...props, children })
+    render: (props: any) =>
+      React.createElement(OnBlurState, { ...props, children })
   })
 
 export default OnBlur

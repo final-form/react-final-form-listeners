@@ -27,8 +27,7 @@ module.exports = {
           'build.es',
           'build.cjs',
           'build.umd.main',
-          'build.umd.min',
-          'copyTypes'
+          'build.umd.min'
         )
       ),
       es: {
@@ -51,15 +50,6 @@ module.exports = {
       },
       andTest: series.nps('build', 'test.size')
     },
-    copyTypes: series(
-      npsUtils.copy('src/*.js.flow dist'),
-      npsUtils.copy(
-        'dist/index.js.flow dist --rename="react-final-form-listeners.cjs.js.flow"'
-      ),
-      npsUtils.copy(
-        'dist/index.js.flow dist --rename="react-final-form-listeners.es.js.flow"'
-      )
-    ),
     docs: {
       description: 'Generates table of contents in README',
       script: 'doctoc README.md'
@@ -68,14 +58,14 @@ module.exports = {
       description: 'lint the entire project',
       script: 'eslint .'
     },
-    flow: {
-      description: 'flow check the entire project',
-      script: 'flow check'
+    typecheck: {
+      description: 'typecheck the entire project',
+      script: 'tsc --noEmit'
     },
     validate: {
       description:
         'This runs several scripts to make sure things look good before committing or on clean install',
-      default: concurrent.nps('lint', 'flow', 'build.andTest', 'test')
+      default: concurrent.nps('lint', 'typecheck', 'build.andTest', 'test')
     }
   },
   options: {

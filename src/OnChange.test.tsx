@@ -1,14 +1,12 @@
 import React from 'react'
-import { render, fireEvent, cleanup } from '@testing-library/react'
+import { render, fireEvent } from '@testing-library/react'
 import { Form, Field } from 'react-final-form'
 import OnChange from './OnChange'
 
 const onSubmitMock = () => {}
-const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms))
 
 describe('OnChange', () => {
-  afterEach(cleanup)
-
   it('should not call listener on first render', () => {
     const spy = jest.fn()
     render(
@@ -89,14 +87,14 @@ describe('OnChange', () => {
               data-testid="everything"
             />
             <OnChange name="everything">
-              {next => {
+              {(next: any) => {
                 if (next) {
                   return form.change('toppings', toppings)
                 }
               }}
             </OnChange>
             {toppings.length > 0 &&
-              toppings.map((topping, index) => {
+              toppings.map((topping) => {
                 return (
                   <Field
                     component="input"
@@ -109,7 +107,7 @@ describe('OnChange', () => {
                 )
               })}
             <OnChange name="toppings">
-              {next => {
+              {(next: any) => {
                 form.change(
                   'everything',
                   next && next.length === toppings.length
@@ -120,31 +118,36 @@ describe('OnChange', () => {
         )}
       </Form>
     )
-    expect(getByTestId('everything').checked).toBe(false)
-    expect(getByTestId('Pepperoni').checked).toBe(false)
-    expect(getByTestId('Mushrooms').checked).toBe(false)
-    expect(getByTestId('Olives').checked).toBe(false)
+    const everythingCheckbox = getByTestId('everything') as HTMLInputElement
+    const pepperoniCheckbox = getByTestId('Pepperoni') as HTMLInputElement
+    const mushroomsCheckbox = getByTestId('Mushrooms') as HTMLInputElement
+    const olivesCheckbox = getByTestId('Olives') as HTMLInputElement
 
-    fireEvent.click(getByTestId('Pepperoni'))
-    expect(getByTestId('Pepperoni').checked).toBe(true)
-    expect(getByTestId('everything').checked).toBe(false)
+    expect(everythingCheckbox.checked).toBe(false)
+    expect(pepperoniCheckbox.checked).toBe(false)
+    expect(mushroomsCheckbox.checked).toBe(false)
+    expect(olivesCheckbox.checked).toBe(false)
 
-    fireEvent.click(getByTestId('Mushrooms'))
-    expect(getByTestId('Mushrooms').checked).toBe(true)
-    expect(getByTestId('everything').checked).toBe(false)
+    fireEvent.click(pepperoniCheckbox)
+    expect(pepperoniCheckbox.checked).toBe(true)
+    expect(everythingCheckbox.checked).toBe(false)
 
-    fireEvent.click(getByTestId('Olives'))
-    expect(getByTestId('Olives').checked).toBe(true)
-    expect(getByTestId('everything').checked).toBe(true)
+    fireEvent.click(mushroomsCheckbox)
+    expect(mushroomsCheckbox.checked).toBe(true)
+    expect(everythingCheckbox.checked).toBe(false)
 
-    fireEvent.click(getByTestId('Olives'))
-    expect(getByTestId('Olives').checked).toBe(false)
-    expect(getByTestId('everything').checked).toBe(false)
+    fireEvent.click(olivesCheckbox)
+    expect(olivesCheckbox.checked).toBe(true)
+    expect(everythingCheckbox.checked).toBe(true)
 
-    fireEvent.click(getByTestId('everything'))
-    expect(getByTestId('Pepperoni').checked).toBe(true)
-    expect(getByTestId('Mushrooms').checked).toBe(true)
-    expect(getByTestId('Olives').checked).toBe(true)
-    expect(getByTestId('everything').checked).toBe(true)
+    fireEvent.click(olivesCheckbox)
+    expect(olivesCheckbox.checked).toBe(false)
+    expect(everythingCheckbox.checked).toBe(false)
+
+    fireEvent.click(everythingCheckbox)
+    expect(pepperoniCheckbox.checked).toBe(true)
+    expect(mushroomsCheckbox.checked).toBe(true)
+    expect(olivesCheckbox.checked).toBe(true)
+    expect(everythingCheckbox.checked).toBe(true)
   })
 })
