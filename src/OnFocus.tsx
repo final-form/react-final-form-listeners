@@ -1,23 +1,19 @@
-// @flow
 import * as React from 'react'
-import { Field } from 'react-final-form'
-import type { OnFocusProps } from './types'
+import { Field, FieldRenderProps } from 'react-final-form'
+import { OnFocusProps } from './types'
 
-type Props = {
-  children: () => void,
+interface Props {
+  children: () => void
   meta: {
     active?: boolean
   }
 }
 
-type State = {
+interface State {
   previous: boolean
 }
 
 class OnFocusState extends React.Component<Props, State> {
-  props: Props
-  state: State
-
   constructor(props: Props) {
     super(props)
     this.state = {
@@ -26,13 +22,16 @@ class OnFocusState extends React.Component<Props, State> {
   }
 
   componentDidUpdate() {
-    const { children, meta: { active } } = this.props
+    const {
+      children,
+      meta: { active }
+    } = this.props
     const { previous } = this.state
     if (active && !previous) {
-      this.setState({ previous: active })
+      this.setState({ previous: !!active })
       children()
     } else if (!active && previous) {
-      this.setState({ previous: active })
+      this.setState({ previous: !!active })
     }
   }
 
@@ -41,11 +40,12 @@ class OnFocusState extends React.Component<Props, State> {
   }
 }
 
-const OnFocus = ({ name, children }: OnFocusProps) =>
+const OnFocus: React.FC<OnFocusProps> = ({ name, children }) =>
   React.createElement(Field, {
     name,
     subscription: { active: true },
-    render: props => React.createElement(OnFocusState, { ...props, children })
+    render: (props: FieldRenderProps<any>) =>
+      React.createElement(OnFocusState, { ...props, children })
   })
 
 export default OnFocus
