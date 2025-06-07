@@ -1,6 +1,6 @@
 {
   "name": "react-final-form-listeners",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "A collection of components to listen to 🏁 React Final Form fields",
   "main": "dist/react-final-form-listeners.cjs.js",
   "jsnext:main": "dist/react-final-form-listeners.es.js",
