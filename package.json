@@ -45,6 +45,7 @@
     "@babel/preset-react": "^7.27.1",
     "@babel/preset-typescript": "^7.27.1",
     "@eslint/js": "^9.28.0",
+    "@size-limit/preset-small-lib": "^11.1.6",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/react": "^16.3.0",
     "@types/jest": "^29.5.14",
@@ -54,7 +55,6 @@
     "@typescript-eslint/parser": "^8.33.1",
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^29.7.0",
-    "bundlesize": "^0.18.2",
     "doctoc": "^2.2.1",
     "eslint": "^9.28.0",
     "eslint-config-react-app": "^7.0.1",
@@ -83,6 +83,7 @@
     "rollup-plugin-replace": "^2.2.0",
     "rollup-plugin-typescript2": "^0.36.0",
     "rollup-plugin-uglify": "^6.0.4",
+    "size-limit": "^11.1.6",
     "typescript": "^5.8.3"
   },
   "peerDependencies": {
@@ -117,18 +118,18 @@
       "git add"
     ]
   },
-  "bundlesize": [
+  "size-limit": [
     {
       "path": "dist/react-final-form-listeners.umd.min.js",
-      "threshold": "2kB"
+      "limit": "2kB"
     },
     {
       "path": "dist/react-final-form-listeners.es.js",
-      "threshold": "3kB"
+      "limit": "3kB"
     },
     {
       "path": "dist/react-final-form-listeners.cjs.js",
-      "threshold": "3kB"
+      "limit": "3kB"
     }
   ],
   "collective": {
