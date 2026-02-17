@@ -158,4 +158,39 @@ describe('OnChange', () => {
     expect(olivesCheckbox.checked).toBe(true)
     expect(everythingCheckbox.checked).toBe(true)
   })
+
+  it('should not loop infinitely when value is NaN and callback updates another field (#11)', () => {
+    // https://github.com/final-form/react-final-form-listeners/issues/11
+    // NaN !== NaN is always true in JS. Without a fix, OnChange would fire on every
+    // render when value is NaN (because NaN !== NaN), creating an infinite update loop
+    // when the callback triggers a re-render (e.g., by changing another field).
+    // Fix: use Object.is() for comparison (Object.is(NaN, NaN) === true).
+    const spy = jest.fn()
+
+    const Wrapper = () => (
+      <Form onSubmit={onSubmitMock} initialValues={{ number: NaN }}>
+        {({ form }) => (
+          <div>
+            <Field name="number" component="input" type="number" data-testid="number" />
+            <Field name="other" component="input" data-testid="other" />
+            <OnChange name="number">
+              {(value, previous) => {
+                spy(value, previous)
+                // This triggers a re-render, which would cause infinite loop with NaN
+                form.change('other', String(value))
+              }}
+            </OnChange>
+          </div>
+        )}
+      </Form>
+    )
+
+    expect(() => {
+      render(<Wrapper />)
+    }).not.toThrow()
+
+    // Spy should be called at most once for the initial NaN value,
+    // NOT in an infinite loop
+    expect(spy.mock.calls.length).toBeLessThanOrEqual(1)
+  })
 })

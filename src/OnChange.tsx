@@ -23,7 +23,7 @@ const OnChangeState: React.FC<Props> = ({ children, input }) => {
       return
     }
 
-    if (input.value !== previousValueRef.current) {
+    if (!Object.is(input.value, previousValueRef.current)) {
       children(input.value, previousValueRef.current)
       previousValueRef.current = input.value
     }
