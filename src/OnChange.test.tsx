@@ -1,5 +1,5 @@
 import React from 'react'
-import { render, fireEvent } from '@testing-library/react'
+import { render, fireEvent, act } from '@testing-library/react'
 import { Form, Field } from 'react-final-form'
 import OnChange from './OnChange'
 
@@ -157,5 +157,41 @@ describe('OnChange', () => {
     expect(mushroomsCheckbox.checked).toBe(true)
     expect(olivesCheckbox.checked).toBe(true)
     expect(everythingCheckbox.checked).toBe(true)
+  })
+
+  it('should not call listener on re-renders when value has not changed (#7)', () => {
+    // https://github.com/final-form/react-final-form-listeners/issues/7
+    // OnChange should NOT fire on re-renders when the value hasn't changed.
+    const spy = jest.fn()
+    let triggerRerender: () => void = () => {}
+
+    const Parent = () => {
+      const [count, setCount] = React.useState(0)
+      triggerRerender = () => setCount(c => c + 1)
+      return (
+        <Form onSubmit={onSubmitMock} initialValues={{ foo: 'bar' }}>
+          {() => (
+            <div>
+              <span data-testid="count">{count}</span>
+              <Field name="foo" component="input" data-testid="foo" />
+              <OnChange name="foo">{spy}</OnChange>
+            </div>
+          )}
+        </Form>
+      )
+    }
+
+    const { getByTestId } = render(<Parent />)
+
+    // Spy might be called once on initial render (if value matches initial)
+    const callsAfterMount = spy.mock.calls.length
+
+    // Force re-renders without changing the field value
+    act(() => { triggerRerender() })
+    act(() => { triggerRerender() })
+    act(() => { triggerRerender() })
+
+    // OnChange should not have been called due to re-renders alone
+    expect(spy.mock.calls.length).toBe(callsAfterMount)
   })
 })
