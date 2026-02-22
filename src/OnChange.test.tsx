@@ -192,7 +192,8 @@ describe('OnChange', () => {
     // Spy should be called exactly once for the initial NaN value,
     // NOT in an infinite loop (and not zero times, which would mask regressions)
     expect(spy).toHaveBeenCalledTimes(1)
-    expect(spy).toHaveBeenCalledWith(NaN, undefined)
+    // Previous value is empty string because final-form initializes fields with ""
+    expect(spy).toHaveBeenCalledWith(NaN, "")
   })
 
   it('should not call listener on re-renders when value has not changed (#7)', () => {
