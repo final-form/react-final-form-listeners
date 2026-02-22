@@ -189,9 +189,10 @@ describe('OnChange', () => {
       render(<Wrapper />)
     }).not.toThrow()
 
-    // Spy should be called at most once for the initial NaN value,
-    // NOT in an infinite loop
-    expect(spy.mock.calls.length).toBeLessThanOrEqual(1)
+    // Spy should be called exactly once for the initial NaN value,
+    // NOT in an infinite loop (and not zero times, which would mask regressions)
+    expect(spy).toHaveBeenCalledTimes(1)
+    expect(spy).toHaveBeenCalledWith(NaN, undefined)
   })
 
   it('should not call listener on re-renders when value has not changed (#7)', () => {
