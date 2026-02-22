@@ -192,6 +192,8 @@ describe('OnChange', () => {
     // Spy should be called at most once for the initial NaN value,
     // NOT in an infinite loop
     expect(spy.mock.calls.length).toBeLessThanOrEqual(1)
+  })
+
   it('should not call listener on re-renders when value has not changed (#7)', () => {
     // https://github.com/final-form/react-final-form-listeners/issues/7
     // OnChange should NOT fire on re-renders when the value hasn't changed.
