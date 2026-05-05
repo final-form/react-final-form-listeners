@@ -72,7 +72,9 @@ export default {
       tsconfigOverride: {
         compilerOptions: {
           declaration: true,
-          declarationDir: 'dist'
+          declarationDir: 'dist',
+          rootDir: 'src',
+          outDir: 'dist',
         }
       }
     }),
